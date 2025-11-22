@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
 
 // Send OTP to email
 const sendOTP = async (email) => {
@@ -283,10 +284,53 @@ exports.getMe = async (req, res) => {
   }
 };
 
+// @route   POST /api/auth/refresh-token
+// @desc    Refresh JWT token
+// @access  Private
+exports.refreshToken = async (req, res) => {
+  try {
+    // Generate new token
+    const token = generateToken(req.user._id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Token refreshed successfully',
+      data: {
+        token,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @route   POST /api/auth/logout
+// @desc    Logout user (client-side token removal)
+// @access  Private
+exports.logout = async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: 'Logged out successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // Generate JWT Token
 const generateToken = (userId) => {
-  // This is a placeholder. Use JWT library in production
-  return `token_${userId}_${Date.now()}`;
+  return jwt.sign(
+    { id: userId },
+    process.env.JWT_SECRET || 'your_jwt_secret_key_here',
+    { expiresIn: process.env.JWT_EXPIRE || '7d' }
+  );
 };
 
 module.exports = exports;
