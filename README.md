@@ -75,15 +75,5 @@ This project is built using the following modern web technologies:
 
 To publish your project, deploy it using your preferred hosting service (Vercel, Netlify, etc.) by connecting it to this Git repository.
 
-### Custom Domains
 
-To connect a custom domain to your deployed project, please refer to the documentation of your hosting provider.
 
-  * **Example Documentation:** [Setting up a custom domain (link placeholder)](https://www.google.com/search?q=https://docs.example.com/features/custom-domain)
-
-<!-- end list -->
-
-```
-
-**Note:** I replaced the deployment and custom domain instructions with generic placeholders and removed the proprietary links. If your project is intended to be deployed via a specific method (e.g., Vercel, Netlify), you can replace the placeholder text under the **Deployment & Publishing** section with the correct, non-proprietary instructions.
-```
