@@ -1,53 +1,18 @@
-// client/src/components/common/UI/LoadingSpinner.jsx
-import { Box, CircularProgress, Typography } from '@mui/material';
-
-const LoadingSpinner = ({ 
-  size = 40, 
-  message = 'Loading...',
-  fullScreen = false 
-}) => {
-  const content = (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 2,
-        p: 3,
-      }}
-    >
-      <CircularProgress size={size} />
-      {message && (
-        <Typography variant="body2" color="text.secondary">
-          {message}
-        </Typography>
-      )}
-    </Box>
-  );
-
-  if (fullScreen) {
-    return (
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'background.paper',
-          zIndex: 9999,
-        }}
-      >
-        {content}
-      </Box>
-    );
+const LoadingSpinner = ({ size = 'md', className = '' }) => {
+  const sizeClasses = {
+    sm: 'h-4 w-4',
+    md: 'h-8 w-8',
+    lg: 'h-12 w-12',
+    xl: 'h-16 w-16'
   }
 
-  return content;
-};
+  return (
+    <div className={`flex justify-center items-center ${className}`}>
+      <div
+        className={`${sizeClasses[size]} border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin`}
+      ></div>
+    </div>
+  )
+}
 
-export default LoadingSpinner;
+export default LoadingSpinner

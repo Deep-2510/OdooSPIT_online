@@ -4,20 +4,18 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3001, // Changed from 3000 to 3001
-    host: true, // Allow external access
+    port: 3001,
+    host: '127.0.0.1',
     proxy: {
       '/api': {
         target: 'http://localhost:5000',
-        changeOrigin: true,
-      },
-    },
+        changeOrigin: true
+      }
+    }
   },
-  build: {
-    outDir: 'dist',
-    sourcemap: true,
-  },
-  define: {
-    'process.env': process.env,
-  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js'
+  }
 })
