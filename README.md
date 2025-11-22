@@ -119,3 +119,8 @@ npm i
 
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
+
+import axios from 'axios'
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || '/api'
+})
