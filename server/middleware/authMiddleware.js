@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 // Middleware to protect routes
 exports.protect = async (req, res, next) => {
@@ -16,11 +17,10 @@ exports.protect = async (req, res, next) => {
       });
     }
 
-    // Verify token (placeholder - use JWT in production)
-    // For now, just extract user ID from token
-    const userId = extractUserIdFromToken(token);
+    // Verify JWT token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key_here');
 
-    const user = await User.findById(userId);
+    const user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(404).json({
@@ -32,6 +32,20 @@ exports.protect = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: 'Token has expired',
+      });
+    }
+
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid token',
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: 'Authorization failed',
@@ -50,13 +64,6 @@ exports.authorize = (...roles) => {
     }
     next();
   };
-};
-
-// Extract user ID from token (placeholder implementation)
-const extractUserIdFromToken = (token) => {
-  // This is a placeholder. In production, use JWT.verify()
-  // For now, just return a dummy ID
-  return '123'; // Replace with actual JWT verification
 };
 
 module.exports = exports;
